@@ -67,7 +67,7 @@ public class ResetLinkAssignmentForgotPassword extends AssignmentEndpoint {
       @RequestParam String email, HttpServletRequest request) {
     String resetLink = UUID.randomUUID().toString();
     ResetLinkAssignment.resetLinks.add(resetLink);
-    String host = request.getHeader("host");
+    String host = webWolfHost;
     if (host == null || !(host.contains(webWolfHost) || host.contains(webWolfPort))) {
     throw new IllegalArgumentException("Invalid host");
     }
@@ -106,7 +106,7 @@ public class ResetLinkAssignmentForgotPassword extends AssignmentEndpoint {
       HttpEntity httpEntity = new HttpEntity(httpHeaders);
       new RestTemplate()
           .exchange(
-              String.format("http://%s/PasswordReset/reset/reset-password/%s", host, resetLink),
+              String.format("http://%s/PasswordReset/reset/reset-password/%s", webWolfHost, resetLink)
               HttpMethod.GET,
               httpEntity,
               Void.class);
